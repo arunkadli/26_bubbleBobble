@@ -16,8 +16,33 @@ SPAWNS = [(200, 330), (600, 330), (100, 210), (700, 210), (150, 450), (650, 450)
 
 
 def bubble_tint(bubble):
-    """Return an (r, g, b) colour for a bubble, or None for the default."""
-    pass
+    """Change bubble colour as its lifetime decreases."""
+    life_ratio = max(0.0, min(1.0, bubble.life / BUBBLE_LIFE))
+
+    # Cyan -> Green -> Yellow -> Red
+    if life_ratio > 0.66:
+        t = (1.0 - life_ratio) / 0.34
+        return (
+            int(120 - 20 * t),
+            230,
+            int(255 - 95 * t)
+        )
+
+    elif life_ratio > 0.33:
+        t = (0.66 - life_ratio) / 0.33
+        return (
+            int(100 + 155 * t),
+            int(230 - 130 * t),
+            int(160 - 60 * t)
+        )
+
+    else:
+        t = life_ratio / 0.33
+        return (
+            255,
+            int(100 - 30 * t),
+            int(100 - 30 * t)
+        )
 
 
 def on_fruit_collected(fruit):
